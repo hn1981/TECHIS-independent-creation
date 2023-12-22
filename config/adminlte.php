@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>商品管理</b>',
+    'logo' => '<b>ラーメン備忘録</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -296,23 +296,43 @@ return [
             'icon' => 'fas fa-gamepad',
         ],
 
-        // AdminLTEデフォルト
-        /*
-        // Navbar items:
         [
-            'type'         => 'navbar-search',
-            'text'         => 'search',
-            'topnav_right' => true,
+            'text' => 'ラーメン一覧',
+            'url'  => 'items',
+            'icon' => 'fas fa-folder',
         ],
+
+        [
+            'text' => '店舗一覧',
+            'url'  => '#',
+            'icon' => 'fasfa-shop',
+        ],
+
+        [
+            'text' => 'レビュ一覧',
+            'url'  => '#',
+            'icon' => 'fas fa-comment',
+        ],
+
+        // AdminLTEデフォルト
+
+        // Navbar items:
+        // [
+        //     'type'         => 'navbar-search',
+        //     'text'         => 'search',
+        //     'topnav_right' => true,
+        // ],
+
         [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-        */
+        
 
         // AdminLTEデフォルト
-        /*
+        
         // Sidebar items:
+        /*
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
@@ -329,6 +349,7 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ],
+        */
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
@@ -340,6 +361,7 @@ return [
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
         ],
+        /*
         [
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',
@@ -378,6 +400,7 @@ return [
                 ],
             ],
         ],
+
         ['header' => 'labels'],
         [
             'text'       => 'important',

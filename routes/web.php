@@ -19,10 +19,13 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+route::middleware(['auth'])->group(function ()
+{
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::prefix('items')->group(function () {
-    Route::get('/', [App\Http\Controllers\ItemController::class, 'index']);
-    Route::get('/add', [App\Http\Controllers\ItemController::class, 'add']);
-    Route::post('/add', [App\Http\Controllers\ItemController::class, 'add']);
+    Route::prefix('items')->group(function () {
+        Route::get('/', [App\Http\Controllers\ItemController::class, 'index']);
+        Route::get('/add', [App\Http\Controllers\ItemController::class, 'add']);
+        Route::post('/add', [App\Http\Controllers\ItemController::class, 'add']);
+    });
 });
