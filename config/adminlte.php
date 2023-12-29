@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => '商品管理',
+    'title' => 'ラーメン備忘録',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -298,19 +298,19 @@ return [
 
         [
             'text' => 'ラーメン一覧',
-            'url'  => 'items',
+            'url'  => 'ramens',
             'icon' => 'fas fa-folder',
         ],
 
         [
             'text' => '店舗一覧',
-            'url'  => '#',
-            'icon' => 'fasfa-shop',
+            'url'  => 'shops',
+            'icon' => 'fas fa-shop',
         ],
 
         [
             'text' => 'レビュ一覧',
-            'url'  => '#',
+            'url'  => 'reviews',
             'icon' => 'fas fa-comment',
         ],
 
@@ -522,6 +522,16 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'Fontawesome' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css',
                 ],
             ],
         ],

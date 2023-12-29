@@ -9,6 +9,11 @@ class ShopImage extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+    'shop_id',
+    'image_path',
+    ];
+
     public function shop() {
     return $this->belongsTo(Shop::class);
     }

@@ -9,6 +9,20 @@ class Shop extends Model
 {
     use HasFactory;
 
+    protected $perPage = 10;
+
+    protected $fillable = [
+        'prefecture_id',
+        'name',
+        'address',
+        'url',
+        'description',
+        ];
+
+    public function getPerPageValue() {
+        return $this->perPage;
+    }
+
     public function user() {
     return $this->belongsTo(User::class);
     }

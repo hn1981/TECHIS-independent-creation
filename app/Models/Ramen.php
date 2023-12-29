@@ -9,6 +9,19 @@ class Ramen extends Model
 {
     use HasFactory;
 
+    protected $perPage = 10;
+
+    protected $fillable = [
+        'shop_id',
+        'name',
+        'description',
+        'eating_date',
+        ];
+
+    public function getPerPageValue() {
+        return $this->perPage;
+    }
+
     public function user() {
     return $this->belongsTo(User::class);
     }
