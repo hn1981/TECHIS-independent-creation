@@ -62,6 +62,9 @@
                         </div>
                     </div>
 
+                    <!-- 直前のURLを隠しフィールドで送信 -->
+                    <input type="hidden" name="previousUrl" value="{{ $previousUrl }}">
+
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary mr-3">登録</button>
                         <a href="{{ route('shops.index') }}" class="btn btn-secondary">店舗一覧に戻る</a>

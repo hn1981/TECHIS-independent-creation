@@ -29,8 +29,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="shopName">店舗名</label>
-                            <select id="shopName" class="form-control" name="shop_id">
+                            <div class=" d-flex align-items-center">
+                                <label for="shopName">店舗名</label>
+                                <p style="margin-bottom: 8px;" class="ml-3 mr-2">新規登録はこちらから</p>
+                                <a href="{{ route('shops.create') }}" class="btn btn-default btn-sm" style="margin-bottom: 8px;">店舗登録</a>
+                            </div>
+
+                            <select id="shopName" class="select2 form-control" name="shop_id">
 
                                 @foreach ($shops as $shop)
                                 <option value="{{ $shop->id }}">{{ $shop->name }}</option>
@@ -67,8 +72,6 @@
                             <input type="file" class="form-control" id="images" name="images[]" multiple>
                         </div>
 
-
-
                     </div>
 
                     <div class="card-footer">
@@ -91,6 +94,12 @@
         $('#rating').on('input change', function() {
             $('#ratingValue').text($(this).val());
         });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
     });
 </script>
 

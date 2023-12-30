@@ -64,9 +64,11 @@ class ShopController extends Controller
         // 実行権限チェック
         // $this->authorize('store', $ramen);
 
+        $previousUrl = url()->previous();
+
         $prefectures = Prefecture::all();
 
-        return view('shop.create', compact('prefectures'));
+        return view('shop.create', compact('prefectures', 'previousUrl'));
     }
 
     /**
@@ -119,7 +121,9 @@ class ShopController extends Controller
             return back()->withErrors('エラーが発生しました。')->withInput();
         }
 
-        return redirect('/shops');
+        $previousUrl = $request->input('previousUrl', '/shops');
+
+        return redirect($previousUrl);
     }
 
     /**

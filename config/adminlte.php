@@ -305,7 +305,7 @@ return [
         [
             'text' => '店舗一覧',
             'url'  => 'shops',
-            'icon' => 'fas fa-shop',
+            'icon' => 'fas fa-folder',
         ],
 
         [
@@ -476,7 +476,7 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
