@@ -212,7 +212,7 @@ class ShopController extends Controller
             // 画像ファイルがあれば保存
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $path = $image->store('ramen_images', 'public');
+                    $path = $image->store('shop_images', 'public');
                     $shop->shopImages()->create([
                         'user_id' => $request->user()->id,
                         'image_path' => $path,
