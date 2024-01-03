@@ -39,9 +39,9 @@
                             <th>店舗名</th>
                             <th>訪問日</th>
                             <th>更新日</th>
-                            <th>詳細</th>
-                            <th>編集</th>
-                            <th>削除</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,21 +49,21 @@
                             <tr>
                                 <td>{{ $ramen->name }}</td>
                                 <td>{{ optional(optional($ramen->shop)->prefecture)->prefecture_name ?? '未設定' }}</td>
-                                <td>{{ optional($ramen->shop)->name ?? '未設定' }}</td>
+                                <td><a href="{{ route('shops.show', ['shop' => $ramen->shop->id]) }}">{{ optional($ramen->shop)->name ?? '未設定' }}</a></td>
                                 <td>{{ $ramen->eating_date }}</td>
                                 <td>{{ $ramen->updated_at->format('Y/m/d') }}</td>
                                 <td id="detail-form-{{ $ramen->id }}" >
-                                    <a class="btn btn-primary" href="{{ route('ramens.show', ['ramen' => $ramen->id]) }}">詳細</a>
+                                    <a href="{{ route('ramens.show', ['ramen' => $ramen->id]) }}"><i class="fa-solid fa-file-lines fa-2xl" style="color: #bec1c6;"></i></a>
                                 </td>
                                 <td style="text-align: center;">
-                                    <a class="btn btn-primary" href="{{ route('ramens.edit', ['ramen' => $ramen->id]) }}">編集</a>
+                                    <a href="{{ route('ramens.edit', ['ramen' => $ramen->id]) }}"><i class="far fa-edit fa-2xl" style="color: #bec1c6;"></i></a>
                                 </td>
                                 <td style="text-align: center;">
                                     <form id="delete-form-{{ $ramen->id }}" action="{{ route('ramens.destroy', ['ramen' => $ramen->id]) }}" method="post">
                                     @csrf
                                     @method('delete')
                                     </form>
-                                    <button form="delete-form-{{ $ramen->id }}" type="submit" class="btn btn-danger delete-btn mr-2" data-id="{{ $ramen->id }}">削除</button>
+                                    <button class="delete-btn" style="border: none; background-color: transparent;" form="delete-form-{{ $ramen->id }}" type="submit" data-id="{{ $ramen->id }}"><i class="fa-solid fa-trash-can fa-2xl" style="color: #bec1c6;"></i></button>
                                 </td>
                             </tr>
                         @endforeach

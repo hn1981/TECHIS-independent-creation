@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', '商品一覧')
+@section('title', 'ユーザー一覧')
 
 @section('content_header')
-    <h1>店舗一覧</h1>
+    <h1>ユーザー一覧</h1>
 @stop
 
 @section('content')
@@ -18,59 +18,48 @@
         <div class="card">
             <div class="card-header d-flex align-items-center">
                 <!-- 検索フォーム -->
-                <form class="" style="width: 40%;" action="{{ route('shops.index') }}" method="GET">
+                <form class="" style="width: 28.75%;" action="{{ route('users.index') }}" method="GET">
                     <div class="input-group flex-grow-1 d-flex align-items-center mr-2">
                         <input class="form-control flex-grow-1" type="text" name="search" placeholder="検索...">
                         <button class="btn btn-primary" type="submit">検索</button>
                     </div>
                 </form>
-                    <div class="input-group input-group-sm d-flex justify-content-end">
-                        <div class="input-group-append">
-                            <a href="{{ route('shops.create') }}" class="btn btn-default">店舗登録</a>
-                        </div>
-                    </div>
             </div>
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th>店舗名</th>
-                            <th>県名</th>
-                            <th>住所</th>
-                            <th>店舗URL</th>
-                            <th>更新日</th>
-                            <th></th>
+                            <th>ID</th>
+                            <th>ユーザー名</th>
+                            <th>メールアドレス</th>
+                            <th>所属ID</th>
                             <th></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($shops as $shop)
+                        @foreach ($users as $user)
                             <tr>
-                                <td>{{ $shop->name }}</td>
-                                <td>{{ $shop->prefecture->prefecture_name }}</td>
-                                <td><a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($shop->address) }}" target="_blank">{{ mb_strlen($shop->address) > 15 ?  mb_substr($shop->address, 0, 15) . '...' : $shop->address }}</a></td>
-                                <td><a href="{{ $shop->url }}" target="_blank">{{ mb_strlen($shop->url) > 30 ? mb_substr($shop->url, 0, 30) . '...' : $shop->url }}</a></td>
-                                <td>{{ $shop->updated_at->format('Y/m/d') }}</td>
-                                <td id="detail-form-{{ $shop->id }}" >
-                                    <a href="{{ route('shops.show', ['shop' => $shop->id]) }}"><i class="fa-solid fa-file-lines fa-2xl" style="color: #bec1c6;"></i></a>
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->role }}</td>
+                                <td style="text-align: center;">
+                                    <a href="{{ route('users.edit', ['user' => $user->id]) }}"><i class="far fa-edit fa-2xl" style="color: #bec1c6;"></i></a>
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="{{ route('shops.edit', ['shop' => $shop->id]) }}"><i class="far fa-edit fa-2xl" style="color: #bec1c6;"></i></a>
-                                </td>
-                                <td style="text-align: center;">
-                                    <form id="delete-form-{{ $shop->id }}" action="{{ route('shops.destroy', ['shop' => $shop->id]) }}" method="post">
+                                    <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', ['user' => $user->id]) }}" method="post">
                                     @csrf
                                     @method('delete')
-                                    <button style="border: none; background-color: transparent;" form="delete-form-{{ $shop->id }}" type="submit" class="delete-btn" data-id="{{ $shop->id }}"><i class="fa-solid fa-trash-can fa-2xl" style="color: #bec1c6;"></i></button>
                                     </form>
+                                    <button class="delete-btn" style="border: none; background-color: transparent;" form="delete-form-{{ $user->id }}" type="submit" data-id="{{ $user->id }}"><i class="fa-solid fa-trash-can fa-2xl" style="color: #bec1c6;"></i></button>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
     <!-- ページネイション -->
-    {{ $shops->links('pagination::bootstrap-4') }}
+    {{ $users->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

@@ -32,6 +32,13 @@ class RamenController extends Controller
 
         $query = Ramen::query();
 
+        $user = $request->user();
+
+        // roleが0の時、$queryに条件を追加
+        if ($user->role === 0) {
+            $query->where('user_id', $user->id);
+        }
+
         // 検索キーワードがある場合に適用
         if ($request->has('search')) {
             $keyword = $request->input('search');
@@ -68,7 +75,7 @@ class RamenController extends Controller
         // 実行権限チェック
         // $this->authorize('store', $ramen);
 
-        $shops = Shop::all();
+        $shops = Shop::where('user_id', $user->id)->get();
 
         return view('ramen.create', compact('shops'));
     }
@@ -157,7 +164,9 @@ class RamenController extends Controller
         // 実行権限チェック
         // $this->authorize('update', $ramen);
 
-        $shops = Shop::all();
+        $user = Auth::user();
+
+        $shops = Shop::where('user_id', $user->id)->get();
         $reviews = $ramen->reviews()->get();
         $ramenImages = $ramen->ramenImages()->get();
 

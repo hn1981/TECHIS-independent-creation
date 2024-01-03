@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $perPage = 10;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -42,6 +44,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getPerPageValue() {
+        return $this->perPage;
+    }
 
     public function ramens() {
     return $this->hasMany(Ramen::class);

@@ -18,7 +18,7 @@
 
                         <div class="form-group">
                             <label>店舗名</label>
-                            <p>{{ $ramen->shop->name }}</p>
+                            <p><td><a href="{{ route('shops.show', ['shop' => $ramen->shop->id]) }}">{{ optional($ramen->shop)->name ?? '未設定' }}</a></td></p>
                         </div>
 
                         <div class="form-group">
@@ -93,17 +93,4 @@
 @stop
 
 @section('js')
-<script>
-
-    $(document).ready(function() {
-        // 初期読み込みで現在のスライダーの値を表示
-        $('#ratingValue').text($('#rating').val());
-
-        // レーティングのスライダーを動かすと下の数字が変わる
-        $('#rating').on('input change', function() {
-            $('#ratingValue').text($(this).val());
-        });
-    });
-</script>
-
 @stop

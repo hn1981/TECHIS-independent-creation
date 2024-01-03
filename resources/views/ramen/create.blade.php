@@ -9,16 +9,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-10">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                       @foreach ($errors->all() as $error)
-                          <li>{{ $error }}</li>
-                       @endforeach
-                    </ul>
-                </div>
-            @endif
-
+            @include('common.errors')
             <div class="card card-primary">
                 <form method="POST" action="{{ route('ramens.store') }}" enctype="multipart/form-data">
                     @csrf
@@ -36,11 +27,9 @@
                             </div>
 
                             <select id="shopName" class="select2 form-control" name="shop_id">
-
                                 @foreach ($shops as $shop)
                                 <option value="{{ $shop->id }}">{{ $shop->name }}</option>
                                 @endforeach
-
                             </select>
                         </div>
 

@@ -77,7 +77,8 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="{{ route('shops.index') }}" class="btn btn-secondary">店舗一覧に戻る</a>
+                        <a href="{{ route('shops.index') }}" class="btn btn-secondary" style="margin-right: 10px;">店舗一覧に戻る</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-secondary">前のページに戻る</a>
                     </div>
                 </form>
             </div>

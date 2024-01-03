@@ -23,12 +23,23 @@ route::middleware(['auth'])->group(function ()
 {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+    // ユーザーグループ
+    Route::prefix('users')->group(function () {
+        // 情報一覧
+        Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+        // 編集画面・実行
+        Route::get('/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+        Route::put('/update/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+        // 削除
+        Route::delete('/destroy/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+    });
+
     // ラーメングループ
     Route::prefix('ramens')->group(function () {
         // 情報一覧
         Route::get('/', [App\Http\Controllers\RamenController::class, 'index'])->name('ramens.index');
         // 詳細画面
-        Route::get('/show{ramen}', [App\Http\Controllers\RamenController::class, 'show'])->name('ramens.show');
+        Route::get('/show/{ramen}', [App\Http\Controllers\RamenController::class, 'show'])->name('ramens.show');
         // 登録画面・実行
         Route::get('/create', [App\Http\Controllers\RamenController::class, 'create'])->name('ramens.create');
         Route::post('/store', [App\Http\Controllers\RamenController::class, 'store'])->name('ramens.store');
@@ -60,10 +71,7 @@ route::middleware(['auth'])->group(function ()
         Route::get('/create', [App\Http\Controllers\ReviewController::class, 'crate'])->name('reviews.create');
         Route::post('/store', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
     });
-
-
-
-
+    
     Route::prefix('items')->group(function () {
         Route::get('/', [App\Http\Controllers\ItemController::class, 'index']);
         Route::get('/add', [App\Http\Controllers\ItemController::class, 'add']);

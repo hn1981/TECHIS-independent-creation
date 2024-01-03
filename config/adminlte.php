@@ -291,28 +291,24 @@ return [
 
     'menu' => [
         [
-            'text' => '商品一覧',
-            'url'  => 'items',
-            'icon' => 'fas fa-gamepad',
-        ],
-
-        [
             'text' => 'ラーメン一覧',
             'url'  => 'ramens',
-            'icon' => 'fas fa-folder',
+            'icon' => 'fa-solid fa-bowl-food',
         ],
 
         [
             'text' => '店舗一覧',
             'url'  => 'shops',
-            'icon' => 'fas fa-folder',
+            'icon' => 'fa-solid fa-shop',
         ],
 
+        /*
         [
             'text' => 'レビュ一覧',
             'url'  => 'reviews',
             'icon' => 'fas fa-comment',
         ],
+        */
 
         // AdminLTEデフォルト
 
@@ -352,13 +348,14 @@ return [
         */
         ['header' => 'account_settings'],
         [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
+            'key'  => 'ユーザー一覧_admin_only',
+            'text' => 'ユーザー一覧',
+            'url'  => 'users',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
+            'text' => 'プロフィール変更',
+            'url'  => 'users/edit/',
             'icon' => 'fas fa-fw fa-lock',
         ],
         /*
@@ -532,6 +529,11 @@ return [
                     'type' => 'css',
                     'asset' => false,
                     'location' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
                 ],
             ],
         ],

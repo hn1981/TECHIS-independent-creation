@@ -9,16 +9,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-10">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
+            @include('common.errors')
             <div class="card card-primary">
                 <form id="edit-form" method="POST" action="{{ route('ramens.update', ['ramen' => $ramen->id]) }}" enctype="multipart/form-data">
                     @csrf
@@ -31,7 +22,7 @@
 
                         <div class="form-group">
                             <label for="shopName">店舗名</label>
-                            <select id="shopName" class="form-control" name="shop_id">
+                            <select id="shopName" class="select2 form-control" name="shop_id">
                                 @foreach ($shops as $shop)
                                 <option value="{{ $shop->id }}" {{ $ramen->shop_id == $shop->id ? 'selected' : '' }}>{{ $shop->name }}</option>
                                 @endforeach
@@ -50,7 +41,7 @@
                             </div>
 
                             @php
-                            $userReview = $ramen->reviews()->where('user_id', auth()->id())->first();
+                            $userReview = $ramen->reviews()->where('user_id', $ramen->user_id)->first();
                             @endphp
 
                             <div class="form-group col-md-6">
@@ -109,7 +100,7 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary edit-btn mr-3">編集</button>
-                        <a href="{{ route('ramens.index') }}" class="btn btn-secondary">商品一覧に戻る</a>
+                        <a href="{{ route('ramens.index') }}" class="btn btn-secondary">ラーメン一覧に戻る</a>
                     </div>
                 </form>
             </div>
@@ -173,6 +164,12 @@ $(document).ready(function() {
         document.getElementById('edit-form').submit(); //  モーダルの実行ボタンが押下された場合は削除
         }
     });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
     });
 </script>
 @stop

@@ -45,6 +45,13 @@ class ShopController extends Controller
             });
         }
 
+        $user = $request->user();
+
+        // roleが0の時、$queryに条件を追加
+        if ($user->role === 0) {
+            $query = $query->where('user_id', $user->id);
+        }
+
         // クエリ実行（検索キーワードがあればその結果、なければ商品すべてが表示）
         $shops = $query->with('prefecture')->orderBy('created_at', 'asc')->paginate();
 
@@ -150,7 +157,7 @@ class ShopController extends Controller
         $prefectures = Prefecture::all();
         $shopImages = $shop->shopImages()->get();
 
-        return view('/shop.edit', compact('shop','prefectures', 'shopImages'));
+        return view('/shop.edit', compact('shop', 'prefectures', 'shopImages'));
     }
 
     /**

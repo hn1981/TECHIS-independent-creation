@@ -9,16 +9,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-10">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
+            @include('common.errors')
             <div class="card card-primary">
                 <form id="edit-form" method="POST" action="{{ route('shops.update', ['shop' => $shop->id]) }}" enctype="multipart/form-data">
                     @csrf
