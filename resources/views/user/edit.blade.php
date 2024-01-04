@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password">新しいパスワード</label>
+                            <label for="password">新しいパスワード（空欄の場合パスワードは変更されません）</label>
                             <input type="password" class="form-control" id="password" name="password" value="">
                         </div>
 

@@ -96,15 +96,20 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|max:255|email:filter|unique:users,email,' . $user->id . ',id', // . $user->id . はユニーク検索から除外するid ',id' はidが保存されているカラムの名前
-            'password' => 'required|max:255|confirmed|string|min:8',
+            'password' => 'nullable|max:255|confirmed|string|min:8',
         ]);
 
         // ユーザーデータの保存
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
         ]);
+
+        if ($request->password) {
+            $user->update([
+                'password' => $request->password,
+            ]);
+            }
 
         return redirect('/');
     }

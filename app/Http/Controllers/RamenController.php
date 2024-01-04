@@ -34,11 +34,6 @@ class RamenController extends Controller
 
         $user = $request->user();
 
-        // roleが0の時、$queryに条件を追加
-        if ($user->role === 0) {
-            $query->where('user_id', $user->id);
-        }
-
         // 検索キーワードがある場合に適用
         if ($request->has('search')) {
             $keyword = $request->input('search');
@@ -54,8 +49,7 @@ class RamenController extends Controller
         }
 
         // クエリ実行（検索キーワードがあればその結果、なければ商品すべてが表示）
-        $ramens = $query->with('shop.prefecture')->orderBy('created_at', 'asc')->paginate();
-
+        $ramens = $query->with('shop.prefecture')->where('user_id', $user->id)->orderBy('created_at', 'asc')->paginate();
         // 検索フォームの入力があった場合、ページネーションへ検索ワードを付帯した状態で戻す
         if ($request->has('search')) {
             $ramens->appends(['search' => $keyword]);
@@ -292,7 +286,8 @@ class RamenController extends Controller
         $ramen->delete();
 
         // 削除後のアイテムの総数を取得
-        $totalItems = Ramen::count();
+        $userId = Auth::id();
+        $totalItems = Ramen::where('user_id', $userId)->count();
 
         // ページネーションの表示数を取得
         $perPage = $ramen->getPerPageValue();

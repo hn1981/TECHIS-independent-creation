@@ -32,7 +32,7 @@
                         </div>
 
                         @php
-                        $userReview = $ramen->reviews()->where('user_id', auth()->id())->first();
+                        $userReview = $ramen->reviews()->where('user_id', $ramen->user_id)->first();
                         @endphp
 
                         <div class="form-group">

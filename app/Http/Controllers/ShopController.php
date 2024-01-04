@@ -53,7 +53,7 @@ class ShopController extends Controller
         }
 
         // クエリ実行（検索キーワードがあればその結果、なければ商品すべてが表示）
-        $shops = $query->with('prefecture')->orderBy('created_at', 'asc')->paginate();
+        $shops = $query->with('prefecture')->where('user_id', $user->id)->orderBy('created_at', 'asc')->paginate();
 
         // 検索フォームの入力があった場合、ページネーションへ検索ワードを付帯した状態で戻す
         if ($request->has('search')) {
@@ -71,11 +71,14 @@ class ShopController extends Controller
         // 実行権限チェック
         // $this->authorize('store', $ramen);
 
-        $previousUrl = url()->previous();
+        // セッション情報（createメソッド実行直前のURL。セッション登録がない場合）を追加
+        if (!session()->has('originalPreviousUrl')) {
+            session(['originalPreviousUrl' => url()->previous()]);
+        }
 
         $prefectures = Prefecture::all();
 
-        return view('shop.create', compact('prefectures', 'previousUrl'));
+        return view('shop.create', compact('prefectures'));
     }
 
     /**
@@ -128,9 +131,13 @@ class ShopController extends Controller
             return back()->withErrors('エラーが発生しました。')->withInput();
         }
 
-        $previousUrl = $request->input('previousUrl', '/shops');
+        // createメソッド取得したoriginalPreviousUrlセッションを変数に代入
+        $originalPreviousUrl = session('originalPreviousUrl', '/shops');
 
-        return redirect($previousUrl);
+        // セッション削除
+        session()->forget('originalPreviousUrl');
+
+        return redirect($originalPreviousUrl);
     }
 
     /**
@@ -270,7 +277,8 @@ class ShopController extends Controller
         $shop->delete();
 
         // 削除後のアイテムの総数を取得
-        $totalItems = Shop::count();
+        $userId = Auth::id();
+        $totalItems = Shop::where('user_id', $userId)->count();
 
         // ページネーションの表示数を取得
         $perPage = $shop->getPerPageValue();

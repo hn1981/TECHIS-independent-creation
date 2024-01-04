@@ -290,6 +290,7 @@ return [
     */
 
     'menu' => [
+        ['header' => 'メニュー'],
         [
             'text' => 'ラーメン一覧',
             'url'  => 'ramens',
@@ -348,12 +349,6 @@ return [
         */
         ['header' => 'account_settings'],
         [
-            'key'  => 'ユーザー一覧_admin_only',
-            'text' => 'ユーザー一覧',
-            'url'  => 'users',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
             'text' => 'プロフィール変更',
             'url'  => 'users/edit/',
             'icon' => 'fas fa-fw fa-lock',
@@ -397,7 +392,31 @@ return [
                 ],
             ],
         ],
+        
+        [
+            'key'  => '管理者用_admin_only',
+            'header' => '管理者用'
+        ],
+        [
+            'key'  => 'ユーザー一覧_admin_only',
+            'text' => 'ユーザー一覧',
+            'url'  => 'users',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'key'  => 'ラーメン一覧（管理者）_admin_only',
+            'text' => 'ラーメン一覧（管理者）',
+            'url'  => 'ramens/admin',
+            'icon' => 'fa-solid fa-bowl-food',
+        ],
+        [
+            'key'  => '店舗一覧（管理者）_admin_only',
+            'text' => '店舗一覧（管理者）',
+            'url'  => 'shops/admin',
+            'icon' => 'fa-solid fa-shop',
+        ],
 
+        /*
         ['header' => 'labels'],
         [
             'text'       => 'important',
