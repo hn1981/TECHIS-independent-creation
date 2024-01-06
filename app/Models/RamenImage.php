@@ -11,6 +11,8 @@ class RamenImage extends Model
 
     protected $fillable = [
     'ramen_id',
+    'image',
+    'mime_type',
     'image_path',
     ];
 

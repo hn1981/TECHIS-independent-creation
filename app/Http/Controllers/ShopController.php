@@ -23,6 +23,8 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
+        session()->forget('adminSession');
+
         // 検索実行時のバリデーション
         $this->validate($request, [
             'search' => 'nullable|string|max:255',
@@ -62,6 +64,67 @@ class ShopController extends Controller
 
         return view('shop.index', compact('shops'));
     }
+
+
+
+
+
+
+    public function adminIndex(Request $request)
+    {
+        $user = $request->user();
+
+        // 実行権限チェック
+        $this->authorize('viewAny', $user);
+
+        // 検索実行時のバリデーション
+        $this->validate($request, [
+            'search' => 'nullable|string|max:255',
+        ]);
+
+        // ページのセッション情報
+        session(['current_page' => $request->get('page', 1)]);
+        // 管理者のセッション情報登録
+        session(['adminSession' => true]);
+
+        $query = Shop::query();
+
+        $user = $request->user();
+
+        // 検索キーワードがある場合に適用
+        if ($request->has('search')) {
+            $keyword = $request->input('search');
+            $query->where(function ($query) use ($keyword) {
+                $query->where('name', 'like', '%' . $keyword . '%')
+                ->orWhere('address', 'like', '%' . $keyword . '%')
+                ->orWhere('shops.id', 'like', '%' . $keyword . '%')
+                ->orWhereHas('prefecture', function ($query) use ($keyword) {
+                    $query->where('prefecture_name', 'like', '%' . $keyword . '%');
+                })
+                ->orWhereHas('user', function ($query) use ($keyword) {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                });
+            });
+        }
+
+        // クエリ実行（検索キーワードがあればその結果、なければ商品すべてが表示）
+        $shops = $query->with('prefecture', 'user')->orderBy('created_at', 'asc')->paginate();
+
+        // 検索フォームの入力があった場合、ページネーションへ検索ワードを付帯した状態で戻す
+        if ($request->has('search')) {
+            $shops->appends(['search' => $keyword]);
+        }
+
+        return view('shop.index', compact('shops'));
+    }
+
+
+
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -115,6 +178,20 @@ class ShopController extends Controller
             // 画像ファイルがあれば保存
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
+                    $image_data = base64_encode(file_get_contents($image));
+                    $mime_type = $image->getMimeType();
+                    $shop->shopImages()->create([
+                        // 'user_id' => $request->user()->id,
+                        'image' => $image_data,
+                        'mime_type' => $mime_type,
+                    ]);
+                }
+            }
+
+            /*
+            // 画像ファイルがあれば保存(パスの場合)
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
                     $path = $image->store('shop_images', 'public');
                     $shop->shopImages()->create([
                         // 'user_id' => $request->user()->id,
@@ -122,6 +199,8 @@ class ShopController extends Controller
                     ]);
                 }
             }
+            */
+
         // 処理が成功したらコミット
             DB::commit();
 
@@ -226,13 +305,28 @@ class ShopController extends Controller
             // 画像ファイルがあれば保存
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
+                    $image_data = base64_encode(file_get_contents($image));
+                    $mime_type = $image->getMimeType();
+                    $shop->shopImages()->create([
+                        // 'user_id' => $request->user()->id,
+                        'image' => $image_data,
+                        'mime_type' => $mime_type,
+                    ]);
+                }
+            }
+
+            /*
+            // 画像ファイルがあれば保存（パスの場合）
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
                     $path = $image->store('shop_images', 'public');
                     $shop->shopImages()->create([
-                        'user_id' => $request->user()->id,
+                        // 'user_id' => $request->user()->id,
                         'image_path' => $path,
                     ]);
                 }
             }
+            */
 
             // ユーザーがチェックした画像IDを取得
             $deleteImagesIds = $request->input('delete_images', []);
@@ -241,7 +335,7 @@ class ShopController extends Controller
             foreach ($deleteImagesIds as $imageId) {
                 $image = ShopImage::findOrFail($imageId);
                 // ファイルシステムから画像を削除
-                Storage::delete('public/' . $image->image_path);
+                // Storage::delete('public/' . $image->image_path);
                 // データベースから画像レコードを削除
                 $image->delete();
             }
@@ -258,7 +352,15 @@ class ShopController extends Controller
         // セッション情報取得
         $page = session('current_page', 1);
 
-        return redirect('/shops?page=' .$page);
+        $adminSession = session('adminSession');
+
+        session()->forget('adminSession');
+
+        if ($adminSession) {
+            return redirect()->route('shops.adminIndex', ['page' => $page]);
+        } else {
+            return redirect()->route('shops.index', ['page' => $page]);
+        }
     }
 
     /**
@@ -277,8 +379,12 @@ class ShopController extends Controller
         $shop->delete();
 
         // 削除後のアイテムの総数を取得
-        $userId = Auth::id();
-        $totalItems = Shop::where('user_id', $userId)->count();
+        if (session('adminSession')) {
+            $totalItems = Shop::count();
+        } else {
+            $userId = Auth::id();
+            $totalItems = Shop::where('user_id', $userId)->count();
+        }
 
         // ページネーションの表示数を取得
         $perPage = $shop->getPerPageValue();
@@ -288,9 +394,17 @@ class ShopController extends Controller
 
         // ページ番号が取得したページ番号よりも大きい場合、取得したページ番号にリダイレクト
         if ($page > $lastPage) {
-            return redirect('/shops?page=' .$lastPage);
+            $page = $lastPage;
         }
 
-        return redirect('/shops?page=' .$page);
+        $adminSession = session('adminSession');
+
+        session()->forget('adminSession');
+
+        if ($adminSession) {
+            return redirect()->route('shops.adminIndex', ['page' => $page]);
+        } else {
+            return redirect()->route('shops.index', ['page' => $page]);
+        }
     }
 }

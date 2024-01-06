@@ -25,6 +25,13 @@
                             <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}">
                         </div>
 
+                        @if (session('adminSession'))
+                        <div class="form-group">
+                            <label for="role">所属ID</label>
+                            <input type="text" class="form-control" id="role" name="role" value="{{ $user->role }}">
+                        </div>
+                        @endif
+
                         <div class="form-group">
                             <label for="password">新しいパスワード（空欄の場合パスワードは変更されません）</label>
                             <input type="password" class="form-control" id="password" name="password" value="">

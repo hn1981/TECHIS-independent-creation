@@ -18,22 +18,28 @@
         <div class="card">
             <div class="card-header d-flex align-items-center">
                 <!-- 検索フォーム -->
-                <form class="" style="width: 40%;" action="{{ route('ramens.index') }}" method="GET">
+                <form class="" style="width: 40%;" action="@if (session('adminSession')) {{ route('ramens.adminIndex') }} @else {{ route('ramens.index') }} @endif" method="GET">
                     <div class="input-group flex-grow-1 d-flex align-items-center mr-2">
                         <input class="form-control flex-grow-1" type="text" name="search" placeholder="検索...">
                         <button class="btn btn-primary" type="submit">検索</button>
                     </div>
                 </form>
+                @if (!session('adminSession'))
                     <div class="input-group input-group-sm d-flex justify-content-end">
                         <div class="input-group-append">
                             <a href="{{ route('ramens.create') }}" class="btn btn-default">ラーメン登録</a>
                         </div>
                     </div>
+                @endif
             </div>
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
+                            @if (session('adminSession'))
+                            <th>作成者</th>
+                            <th>ID</th>
+                            @endif
                             <th>名前</th>
                             <th>県名</th>
                             <th>店舗名</th>
@@ -47,6 +53,10 @@
                     <tbody>
                         @foreach ($ramens as $ramen)
                             <tr>
+                                @if (session('adminSession'))
+                                <td>{{ $ramen->user->name }}</td>
+                                <td>{{ $ramen->id }}</td>
+                                @endif
                                 <td>{{ $ramen->name }}</td>
                                 <td>{{ optional(optional($ramen->shop)->prefecture)->prefecture_name ?? '未設定' }}</td>
                                 <td><a href="{{ route('shops.show', ['shop' => $ramen->shop->id]) }}">{{ optional($ramen->shop)->name ?? '未設定' }}</a></td>

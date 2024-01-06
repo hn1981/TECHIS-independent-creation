@@ -350,7 +350,7 @@ return [
         ['header' => 'account_settings'],
         [
             'text' => 'プロフィール変更',
-            'url'  => 'users/edit/',
+            'url'  => 'users/edit',
             'icon' => 'fas fa-fw fa-lock',
         ],
         /*
@@ -392,11 +392,11 @@ return [
                 ],
             ],
         ],
-        
+        */
+
         [
             'key'  => '管理者用_admin_only',
-            'header' => '管理者用'
-        ],
+            'header' => '管理者用'],
         [
             'key'  => 'ユーザー一覧_admin_only',
             'text' => 'ユーザー一覧',
@@ -415,6 +415,7 @@ return [
             'url'  => 'shops/admin',
             'icon' => 'fa-solid fa-shop',
         ],
+        
 
         /*
         ['header' => 'labels'],

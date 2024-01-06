@@ -45,7 +45,7 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->role }}</td>
                                 <td style="text-align: center;">
-                                    <a href="{{ route('users.edit', ['user' => $user->id]) }}"><i class="far fa-edit fa-2xl" style="color: #bec1c6;"></i></a>
+                                    <a href="{{ route('users.adminEdit', ['user' => $user->id]) }}"><i class="far fa-edit fa-2xl" style="color: #bec1c6;"></i></a>
                                 </td>
                                 <td style="text-align: center;">
                                     <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', ['user' => $user->id]) }}" method="post">

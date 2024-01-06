@@ -18,22 +18,28 @@
         <div class="card">
             <div class="card-header d-flex align-items-center">
                 <!-- 検索フォーム -->
-                <form class="" style="width: 40%;" action="{{ route('shops.index') }}" method="GET">
+                <form class="" style="width: 40%;" action="@if (session('adminSession')) {{ route('shops.adminIndex') }} @else {{ route('shops.index') }} @endif" method="GET">
                     <div class="input-group flex-grow-1 d-flex align-items-center mr-2">
                         <input class="form-control flex-grow-1" type="text" name="search" placeholder="検索...">
                         <button class="btn btn-primary" type="submit">検索</button>
                     </div>
                 </form>
+                @if (!session('adminSession'))
                     <div class="input-group input-group-sm d-flex justify-content-end">
                         <div class="input-group-append">
                             <a href="{{ route('shops.create') }}" class="btn btn-default">店舗登録</a>
                         </div>
                     </div>
+                @endif
             </div>
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
+                            @if (session('adminSession'))
+                            <th>作成者</th>
+                            <th>ID</th>
+                            @endif
                             <th>店舗名</th>
                             <th>県名</th>
                             <th>住所</th>
@@ -47,6 +53,10 @@
                     <tbody>
                         @foreach ($shops as $shop)
                             <tr>
+                                @if (session('adminSession'))
+                                <td>{{ $shop->user->name }}</td>
+                                <td>{{ $shop->id }}</td>
+                                @endif
                                 <td>{{ $shop->name }}</td>
                                 <td>{{ $shop->prefecture->prefecture_name }}</td>
                                 <td><a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($shop->address) }}" target="_blank">{{ mb_strlen($shop->address) > 15 ?  mb_substr($shop->address, 0, 15) . '...' : $shop->address }}</a></td>

@@ -50,7 +50,7 @@
                             <label for="images">既存の画像（最大3枚）</label>
                             @foreach ($shop->shopImages as $image)
                                 <div>
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" width="100" height="100" data-toggle="modal" data-target="#imageModal-{{ $image->id }}">
+                                    <img src="data:image/{{ $image->mime_type }};base64, {{ $image->image }}" width="100" height="100" data-toggle="modal" data-target="#imageModal-{{ $image->id }}">
                                         <!-- モーダル本体 -->
                                             <div class="modal fade" id="imageModal-{{ $image->id }}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel-{{ $image->id }}" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
@@ -63,7 +63,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <!-- 原寸大画像を表示 -->
-                                                            <img src="{{ asset('storage/' . $image->image_path) }}" class="img-fluid">
+                                                            <img src="data:image/{{ $image->mime_type }};base64, {{ $image->image }}" class="img-fluid">
                                                         </div>
                                                         <div class="modal-footer" style="border: none;">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">確認</button>

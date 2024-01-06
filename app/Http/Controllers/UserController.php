@@ -14,8 +14,7 @@ class UserController extends Controller
     //一覧画面表示
     public function index(Request $request)
     {
-
-        $user = Auth()->user();
+        $user = $request->user();
 
         // 実行権限チェック
         $this->authorize('viewAny', $user);
@@ -27,6 +26,8 @@ class UserController extends Controller
 
         // ページのセッション情報
         session(['current_page' => $request->get('page', 1)]);
+        // 管理者のセッション情報登録
+        session(['adminSession' => true]);
 
         $query = User::query();
 
@@ -77,10 +78,13 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(User $user = null)
     {
-        $user = Auth()->user();
+        session()->forget('adminSession');
 
+        if ($user === null) {
+            $user = Auth()->user();
+        }
         return view('user.edit', compact('user'));
     }
 
@@ -109,9 +113,18 @@ class UserController extends Controller
             $user->update([
                 'password' => $request->password,
             ]);
-            }
+        }
 
-        return redirect('/');
+        $page = session('current_page');
+        $adminSession = session('adminSession');
+
+        session()->forget('adminSession');
+
+        if ($adminSession) {
+            return redirect()->route('users.index', ['page' => $page]);
+        } else {
+            return redirect('/');
+        }
     }
 
     /**
@@ -140,9 +153,11 @@ class UserController extends Controller
 
         // ページ番号が取得したページ番号よりも大きい場合、取得したページ番号にリダイレクト
         if ($page > $lastPage) {
-            return redirect('/users?page=' .$lastPage);
+            $page = $lastPage;
         }
 
-        return redirect('/users?page=' .$page);
+        session()->forget('adminSession');
+
+        return redirect()->route('users.index', ['page' => $page]);
     }
 }

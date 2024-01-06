@@ -22,6 +22,8 @@ class RamenController extends Controller
     //一覧画面表示
     public function index(Request $request)
     {
+        session()->forget('adminSession');
+
         // 検索実行時のバリデーション
         $this->validate($request, [
             'search' => 'nullable|string|max:255',
@@ -57,6 +59,75 @@ class RamenController extends Controller
 
         return view('ramen.index', compact('ramens'));
     }
+
+
+
+
+    public function adminIndex(Request $request)
+    {
+        $user = $request->user();
+
+        // 実行権限チェック
+        $this->authorize('viewAny', $user);
+
+        // 検索実行時のバリデーション
+        $this->validate($request, [
+            'search' => 'nullable|string|max:255',
+        ]);
+
+        // ページのセッション情報登録
+        session(['current_page' => $request->get('page', 1)]);
+        // 管理者のセッション情報登録
+        session(['adminSession' => true]);
+
+        $query = Ramen::query();
+
+
+
+        // 検索キーワードがある場合に適用
+        if ($request->has('search')) {
+            $keyword = $request->input('search');
+            $query->where(function ($query) use ($keyword) {
+                $query->where('name', 'like', '%' . $keyword . '%')
+                ->orWhere('ramens.id', 'like', '%' . $keyword . '%')
+                ->orWhereHas('shop', function ($query) use ($keyword) {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                })
+                ->orWhereHas('shop.prefecture', function ($query) use ($keyword) {
+                    $query->where('prefecture_name', 'like', '%' . $keyword . '%');
+                })
+                ->orWhereHas('user', function ($query) use ($keyword) {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                });
+            });
+        }
+
+        // クエリ実行（検索キーワードがあればその結果、なければ商品すべてが表示）
+        $ramens = $query->with('shop.prefecture', 'user')->orderBy('created_at', 'asc')->paginate();
+        // 検索フォームの入力があった場合、ページネーションへ検索ワードを付帯した状態で戻す
+        if ($request->has('search')) {
+            $ramens->appends(['search' => $keyword]);
+        }
+
+        return view('ramen.index', compact('ramens'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -114,13 +185,29 @@ class RamenController extends Controller
             // 画像ファイルがあれば保存
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $path = $image->store('ramen_images', 'public');
+                    $image_data = base64_encode(file_get_contents($image));
+                    $mime_type = $image->getMimeType();
+                    $ramen->ramenImages()->create([
+                        // 'user_id' => $request->user()->id,
+                        'image' => $image_data,
+                        'mime_type' => $mime_type,
+                    ]);
+                }
+            }
+
+            /*
+            // 画像ファイルがあれば保存(パスの場合)
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('shop_images', 'public');
                     $ramen->ramenImages()->create([
                         // 'user_id' => $request->user()->id,
                         'image_path' => $path,
                     ]);
                 }
             }
+            */
+
         // 処理が成功したらコミット
             DB::commit();
 
@@ -146,7 +233,7 @@ class RamenController extends Controller
         $reviews = $ramen->reviews()->get();
         $ramenImages = $ramen->ramenImages()->get();
 
-        return view('/ramen.show', compact('ramen','shops', 'reviews', 'ramenImages'));
+        return view('/ramen.show', compact('ramen', 'shops', 'reviews', 'ramenImages'));
     }
 
     /**
@@ -158,9 +245,9 @@ class RamenController extends Controller
         // 実行権限チェック
         // $this->authorize('update', $ramen);
 
-        $user = Auth::user();
+        $userId = $ramen->user_id;
 
-        $shops = Shop::where('user_id', $user->id)->get();
+        $shops = Shop::where('user_id', $userId)->get();
         $reviews = $ramen->reviews()->get();
         $ramenImages = $ramen->ramenImages()->get();
 
@@ -235,13 +322,28 @@ class RamenController extends Controller
             // 画像ファイルがあれば保存
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $path = $image->store('ramen_images', 'public');
+                    $image_data = base64_encode(file_get_contents($image));
+                    $mime_type = $image->getMimeType();
                     $ramen->ramenImages()->create([
-                        'user_id' => $request->user()->id,
+                        // 'user_id' => $request->user()->id,
+                        'image' => $image_data,
+                        'mime_type' => $mime_type,
+                    ]);
+                }
+            }
+
+            /*
+            // 画像ファイルがあれば保存(パスの場合)
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('shop_images', 'public');
+                    $ramen->ramenImages()->create([
+                        // 'user_id' => $request->user()->id,
                         'image_path' => $path,
                     ]);
                 }
             }
+            */
 
             // ユーザーがチェックした画像IDを取得
             $deleteImagesIds = $request->input('delete_images', []);
@@ -249,8 +351,10 @@ class RamenController extends Controller
             // 取得した画像IDに対応する画像を削除
             foreach ($deleteImagesIds as $imageId) {
                 $image = RamenImage::findOrFail($imageId);
+
                 // ファイルシステムから画像を削除
-                Storage::delete('public/' . $image->image_path);
+                // Storage::delete('public/' . $image->image_path);
+
                 // データベースから画像レコードを削除
                 $image->delete();
             }
@@ -267,7 +371,15 @@ class RamenController extends Controller
         // セッション情報取得
         $page = session('current_page', 1);
 
-        return redirect('/ramens?page=' .$page);
+        $adminSession = session('adminSession');
+
+        session()->forget('adminSession');
+
+        if ($adminSession) {
+            return redirect()->route('ramens.adminIndex', ['page' => $page]);
+        } else {
+            return redirect()->route('ramens.index', ['page' => $page]);
+        }
     }
 
     /**
@@ -286,8 +398,12 @@ class RamenController extends Controller
         $ramen->delete();
 
         // 削除後のアイテムの総数を取得
-        $userId = Auth::id();
-        $totalItems = Ramen::where('user_id', $userId)->count();
+        if (session('adminSession')) {
+            $totalItems = Ramen::count();
+        } else {
+            $userId = Auth::id();
+            $totalItems = Ramen::where('user_id', $userId)->count();
+        }
 
         // ページネーションの表示数を取得
         $perPage = $ramen->getPerPageValue();
@@ -297,9 +413,18 @@ class RamenController extends Controller
 
         // ページ番号が取得したページ番号よりも大きい場合、取得したページ番号にリダイレクト
         if ($page > $lastPage) {
-            return redirect('/ramens?page=' .$lastPage);
+            $page = $lastPage;
         }
 
-        return redirect('/ramens?page=' .$page);
+        $adminSession = session('adminSession');
+
+        session()->forget('adminSession');
+
+        if ($adminSession) {
+            return redirect()->route('ramens.adminIndex', ['page' => $page]);
+        } else {
+            return redirect()->route('ramens.index', ['page' => $page]);
+        }
+
     }
 }
