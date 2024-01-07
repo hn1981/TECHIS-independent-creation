@@ -3,7 +3,10 @@
 @section('title', 'ラーメンデータ編集')
 
 @section('content_header')
+<div class="d-flex align-items-center">
+    <i class="fa-solid fa-bowl-food fa-2xl m-3"></i>
     <h1>ラーメンデータ編集</h1>
+</div>
 @stop
 
 @section('content')
@@ -37,7 +40,7 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="visitDate">訪問日</label>
-                                <input type="date" class="form-control" id="visitDate" name="eating_date" value="{{ $ramen->eating_date }}">
+                                <input type="date" max="{{ $nowDate }}" class="form-control" id="visitDate" name="eating_date" value="{{ $ramen->eating_date }}">
                             </div>
 
                             @php

@@ -19,6 +19,8 @@ class UserController extends Controller
         // 実行権限チェック
         $this->authorize('viewAny', $user);
 
+        session(['adminSession' => true]);
+
         // 検索実行時のバリデーション
         $this->validate($request, [
             'search' => 'nullable|string|max:255',
@@ -80,9 +82,9 @@ class UserController extends Controller
      */
     public function edit(User $user = null)
     {
-        session()->forget('adminSession');
 
         if ($user === null) {
+            session()->forget('adminSession');
             $user = Auth()->user();
         }
         return view('user.edit', compact('user'));

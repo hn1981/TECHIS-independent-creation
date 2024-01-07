@@ -3,8 +3,11 @@
 @section('title', '商品一覧')
 
 @section('content_header')
+<div class="d-flex align-items-center">
+    <i class="fa-solid fa-bowl-food fa-2xl m-3"></i>
     <h1>ラーメン一覧</h1>
-@stop
+</div>
+    @stop
 
 @section('content')
 

@@ -55,7 +55,7 @@ class ShopController extends Controller
         }
 
         // クエリ実行（検索キーワードがあればその結果、なければ商品すべてが表示）
-        $shops = $query->with('prefecture')->where('user_id', $user->id)->orderBy('created_at', 'asc')->paginate();
+        $shops = $query->with('prefecture')->where('user_id', $user->id)->orderBy('updated_at', 'desc')->paginate();
 
         // 検索フォームの入力があった場合、ページネーションへ検索ワードを付帯した状態で戻す
         if ($request->has('search')) {
@@ -108,7 +108,7 @@ class ShopController extends Controller
         }
 
         // クエリ実行（検索キーワードがあればその結果、なければ商品すべてが表示）
-        $shops = $query->with('prefecture', 'user')->orderBy('created_at', 'asc')->paginate();
+        $shops = $query->with('prefecture', 'user')->orderBy('updated_at', 'desc')->paginate();
 
         // 検索フォームの入力があった場合、ページネーションへ検索ワードを付帯した状態で戻す
         if ($request->has('search')) {

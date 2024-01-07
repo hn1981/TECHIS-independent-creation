@@ -3,7 +3,10 @@
 @section('title', '店舗データ編集')
 
 @section('content_header')
+<div class="d-flex align-items-center">
+    <i class="fa-solid fa-shop fa-2xl m-3"></i>
     <h1>店舗データ編集</h1>
+</div>
 @stop
 
 @section('content')

@@ -3,7 +3,17 @@
 @section('title', 'プロフィール変更')
 
 @section('content_header')
+    @if (session('adminSession'))
+    <div class="d-flex align-items-center">
+    <i class="fas fa-fw fa-user fa-2xl m-3"></i>
+        <h1>ユーザーデータ変更</h1>
+    </div>
+    @else
+    <div class="d-flex align-items-center">
+    <i class="fas fa-fw fa-lock fa-2xl m-3"></i>
     <h1>プロフィール変更</h1>
+    </div>
+    @endif
 @stop
 
 @section('content')

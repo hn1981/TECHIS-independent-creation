@@ -3,7 +3,10 @@
 @section('title', 'ユーザー一覧')
 
 @section('content_header')
+<div class="d-flex align-items-center">
+    <i class="fas fa-fw fa-user fa-2xl m-3"></i>
     <h1>ユーザー一覧</h1>
+</div>
 @stop
 
 @section('content')

@@ -51,7 +51,7 @@ class RamenController extends Controller
         }
 
         // クエリ実行（検索キーワードがあればその結果、なければ商品すべてが表示）
-        $ramens = $query->with('shop.prefecture')->where('user_id', $user->id)->orderBy('created_at', 'asc')->paginate();
+        $ramens = $query->with('shop.prefecture')->where('user_id', $user->id)->orderBy('updated_at', 'desc')->paginate();
         // 検索フォームの入力があった場合、ページネーションへ検索ワードを付帯した状態で戻す
         if ($request->has('search')) {
             $ramens->appends(['search' => $keyword]);
@@ -103,7 +103,7 @@ class RamenController extends Controller
         }
 
         // クエリ実行（検索キーワードがあればその結果、なければ商品すべてが表示）
-        $ramens = $query->with('shop.prefecture', 'user')->orderBy('created_at', 'asc')->paginate();
+        $ramens = $query->with('shop.prefecture', 'user')->orderBy('updated_at', 'desc')->paginate();
         // 検索フォームの入力があった場合、ページネーションへ検索ワードを付帯した状態で戻す
         if ($request->has('search')) {
             $ramens->appends(['search' => $keyword]);
@@ -142,7 +142,9 @@ class RamenController extends Controller
 
         $shops = Shop::where('user_id', $user->id)->get();
 
-        return view('ramen.create', compact('shops'));
+        $nowDate = now()->format('Y-m-d');
+
+        return view('ramen.create', compact('shops', 'nowDate'));
     }
 
     /**
@@ -251,7 +253,9 @@ class RamenController extends Controller
         $reviews = $ramen->reviews()->get();
         $ramenImages = $ramen->ramenImages()->get();
 
-        return view('/ramen.edit', compact('ramen','shops', 'reviews', 'ramenImages'));
+        $nowDate = now()->format('Y-m-d');
+
+        return view('/ramen.edit', compact('ramen','shops', 'reviews', 'ramenImages', 'nowDate'));
     }
 
     /**
