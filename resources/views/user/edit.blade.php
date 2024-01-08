@@ -17,50 +17,50 @@
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-md-10">
-            @include('common.errors')
-            <div class="card card-primary">
-                <form id="edit-form" method="POST" action="{{ route('users.update', ['user' => $user->id]) }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="name">名前</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">メールアドレス</label>
-                            <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}">
-                        </div>
-
-                        @if (session('adminSession'))
-                        <div class="form-group">
-                            <label for="role">所属ID</label>
-                            <input type="text" class="form-control" id="role" name="role" value="{{ $user->role }}">
-                        </div>
-                        @endif
-
-                        <div class="form-group">
-                            <label for="password">新しいパスワード（空欄の場合パスワードは変更されません）</label>
-                            <input type="password" class="form-control" id="password" name="password" value="">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password">新しいパスワード（確認用）</label>
-                            <input type="password" class="form-control" id="password" name="password_confirmation" value="">
-                        </div>
+<div class="row">
+    <div class="col-md-10">
+        @include('common.errors')
+        <div class="card card-primary">
+            <form id="edit-form" method="POST" action="{{ route('users.update', ['user' => $user->id]) }}">
+                @csrf
+                @method('PUT')
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name">名前</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}">
                     </div>
 
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary edit-btn mr-3">編集</button>
-                        <a href="{{ route('home') }}" class="btn btn-secondary">ホームに戻る</a>
+                    <div class="form-group">
+                        <label for="email">メールアドレス</label>
+                        <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}">
                     </div>
-                </form>
-            </div>
+
+                    @if (session('adminSession'))
+                    <div class="form-group">
+                        <label for="role">所属ID</label>
+                        <input type="text" class="form-control" id="role" name="role" value="{{ $user->role }}">
+                    </div>
+                    @endif
+
+                    <div class="form-group">
+                        <label for="password">新しいパスワード（空欄の場合パスワードは変更されません）</label>
+                        <input type="password" class="form-control" id="password" name="password" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">新しいパスワード（確認用）</label>
+                        <input type="password" class="form-control" id="password" name="password_confirmation" value="">
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary edit-btn mr-3">編集</button>
+                    <a href="{{ route('home') }}" class="btn btn-secondary">ホームに戻る</a>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
 <!-- モーダル -->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -82,8 +82,6 @@
         </div>
     </div>
 </div>
-
-
 @stop
 
 @section('css')

@@ -95,10 +95,6 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
-        // 実行権限チェック
-        // $this->authorize('update', $ramen);
-
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|max:255|email:filter|unique:users,email,' . $user->id . ',id', // . $user->id . はユニーク検索から除外するid ',id' はidが保存されているカラムの名前
@@ -132,11 +128,11 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    // 商品情報削除
+    // ユーザー情報削除
     public function destroy (User $user)
     {
         // 実行権限チェック
-        // $this->authorize('destroy', $shop);
+        // $this->authorize('destroy', $user);
 
         // セッション情報取得
         $page = session('current_page', 1);

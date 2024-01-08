@@ -60,9 +60,6 @@ class RamenController extends Controller
         return view('ramen.index', compact('ramens'));
     }
 
-
-
-
     public function adminIndex(Request $request)
     {
         $user = $request->user();
@@ -81,8 +78,6 @@ class RamenController extends Controller
         session(['adminSession' => true]);
 
         $query = Ramen::query();
-
-
 
         // 検索キーワードがある場合に適用
         if ($request->has('search')) {
@@ -111,23 +106,6 @@ class RamenController extends Controller
 
         return view('ramen.index', compact('ramens'));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -221,7 +199,6 @@ class RamenController extends Controller
 
         return redirect('/ramens');
     }
-
 
     /**
      * Display the specified resource.

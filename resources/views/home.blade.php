@@ -69,7 +69,7 @@
                         <tr>
                             <td>
                                 @foreach ($prefectureShopCounts as $prefectureName => $groupCount)
-                                <p>{{$loop->iteration}}位　{{ $prefectureName }} : {{ $groupCount }}件</p>
+                                <p>{{$loop->iteration}}位　{{ $prefectureName }} : {{ $groupCount }}回</p>
                                 @endforeach
                             </td>
                         </tr>

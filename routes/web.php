@@ -59,7 +59,7 @@ route::middleware(['auth'])->group(function ()
         Route::get('/', [App\Http\Controllers\ShopController::class, 'index'])->name('shops.index');
         // 情報一覧（管理者）
         Route::get('/admin', [App\Http\Controllers\ShopController::class, 'adminIndex'])->name('shops.adminIndex');
-                // 詳細画面
+        // 詳細画面
         Route::get('/show/{shop}', [App\Http\Controllers\ShopController::class, 'show'])->name('shops.show');
         // // 登録画面・実行
         Route::get('/create', [App\Http\Controllers\ShopController::class, 'create'])->name('shops.create');
@@ -71,6 +71,7 @@ route::middleware(['auth'])->group(function ()
         Route::delete('/destroy/{shop}', [\App\Http\Controllers\ShopController::class, 'destroy'])->name('shops.destroy');
     });
 
+    /*
     Route::prefix('reviews')->group(function () {
         Route::get('/', [App\Http\Controllers\ReviewController::class, 'index'])->name('reviews.index');
         Route::get('/create', [App\Http\Controllers\ReviewController::class, 'crate'])->name('reviews.create');
@@ -82,4 +83,5 @@ route::middleware(['auth'])->group(function ()
         Route::get('/add', [App\Http\Controllers\ItemController::class, 'add']);
         Route::post('/add', [App\Http\Controllers\ItemController::class, 'add']);
     });
+    */
 });

@@ -65,11 +65,6 @@ class ShopController extends Controller
         return view('shop.index', compact('shops'));
     }
 
-
-
-
-
-
     public function adminIndex(Request $request)
     {
         $user = $request->user();
@@ -117,14 +112,6 @@ class ShopController extends Controller
 
         return view('shop.index', compact('shops'));
     }
-
-
-
-
-
-
-
-
 
     /**
      * Show the form for creating a new resource.

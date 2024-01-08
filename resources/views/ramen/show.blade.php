@@ -84,7 +84,8 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="{{ route('ramens.index') }}" class="btn btn-secondary">一覧に戻る</a>
+                        <a href="{{ route('ramens.index') }}" class="btn btn-secondary" style="margin-right: 10px;">一覧に戻る</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-secondary">前のページに戻る</a>
                     </div>
                 </form>
             </div>
