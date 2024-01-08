@@ -15,7 +15,11 @@ class ShopsTableSeeder extends Seeder
      */
     public function run(): void
     {
+        // 一時的に外部キー制約を無効
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         // テーブルデータをクリア
+        DB::table('shop_images')->truncate();
         DB::table('shops')->truncate();
         //都道府県データを作成
         $shops = [
@@ -476,5 +480,8 @@ class ShopsTableSeeder extends Seeder
         foreach($shops as $shop) {
             Shop::create($shop);
         }
+
+        // 外部キー制約を有効化
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
