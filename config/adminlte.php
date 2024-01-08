@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => '商品管理',
+    'title' => 'ラーメン備忘録',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>商品管理</b>',
+    'logo' => '<b>ラーメン備忘録</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -290,29 +290,46 @@ return [
     */
 
     'menu' => [
+        ['header' => 'メニュー'],
         [
-            'text' => '商品一覧',
-            'url'  => 'items',
-            'icon' => 'fas fa-gamepad',
+            'text' => 'ラーメン一覧',
+            'url'  => 'ramens',
+            'icon' => 'fa-solid fa-bowl-food',
         ],
 
-        // AdminLTEデフォルト
-        /*
-        // Navbar items:
         [
-            'type'         => 'navbar-search',
-            'text'         => 'search',
-            'topnav_right' => true,
+            'text' => '店舗一覧',
+            'url'  => 'shops',
+            'icon' => 'fa-solid fa-shop',
         ],
+
+        /*
         [
-            'type'         => 'fullscreen-widget',
-            'topnav_right' => true,
+            'text' => 'レビュ一覧',
+            'url'  => 'reviews',
+            'icon' => 'fas fa-comment',
         ],
         */
 
         // AdminLTEデフォルト
-        /*
+
+        // Navbar items:
+        // [
+        //     'type'         => 'navbar-search',
+        //     'text'         => 'search',
+        //     'topnav_right' => true,
+        // ],
+
+        [
+            'type'         => 'fullscreen-widget',
+            'topnav_right' => true,
+        ],
+        
+
+        // AdminLTEデフォルト
+        
         // Sidebar items:
+        /*
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
@@ -329,17 +346,14 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ],
+        */
         ['header' => 'account_settings'],
         [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
+            'text' => 'プロフィール変更',
+            'url'  => 'users/edit',
             'icon' => 'fas fa-fw fa-lock',
         ],
+        /*
         [
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',
@@ -378,6 +392,32 @@ return [
                 ],
             ],
         ],
+        */
+
+        [
+            'key'  => '管理者用_admin_only',
+            'header' => '管理者用'],
+        [
+            'key'  => 'ユーザー一覧_admin_only',
+            'text' => 'ユーザー一覧',
+            'url'  => 'users',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'key'  => 'ラーメン一覧（管理者）_admin_only',
+            'text' => 'ラーメン一覧（管理者）',
+            'url'  => 'ramens/admin',
+            'icon' => 'fa-solid fa-bowl-food',
+        ],
+        [
+            'key'  => '店舗一覧（管理者）_admin_only',
+            'text' => '店舗一覧（管理者）',
+            'url'  => 'shops/admin',
+            'icon' => 'fa-solid fa-shop',
+        ],
+        
+
+        /*
         ['header' => 'labels'],
         [
             'text'       => 'important',
@@ -453,7 +493,7 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -499,6 +539,21 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'Fontawesome' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
                 ],
             ],
         ],

@@ -7,6 +7,8 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -26,6 +28,14 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
+            if (auth()->user()->role == 0){
+                $event->menu->remove('管理者用_admin_only');
+                $event->menu->remove('ユーザー一覧_admin_only');
+                $event->menu->remove('ラーメン一覧（管理者）_admin_only');
+                $event->menu->remove('店舗一覧（管理者）_admin_only');
+            }
+        });
     }
 
     /**
