@@ -107,10 +107,6 @@ class UserController extends Controller
             'email' => $request->email,
         ]);
 
-        if (session('adminSession')) {
-            $user->update(['role' => $request->role,]);
-        }
-
         if ($request->password) {
             $user->update([
                 'password' => $request->password,

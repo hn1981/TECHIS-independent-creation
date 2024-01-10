@@ -6,7 +6,7 @@
     @if (session('adminSession'))
     <div class="d-flex align-items-center">
     <i class="fas fa-fw fa-user fa-2xl m-3"></i>
-        <h1>ユーザーデータ編集</h1>
+        <h1>ユーザーデータ変更</h1>
     </div>
     @else
     <div class="d-flex align-items-center">

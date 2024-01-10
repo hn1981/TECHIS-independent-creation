@@ -67,7 +67,7 @@
 
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary mr-3">登録</button>
-                    <a href="{{ route('ramens.index') }}" class="btn btn-secondary">ラーメン一覧に戻る</a>
+                    <a href="{{ route('ramens.index') }}" class="btn btn-secondary">商品一覧に戻る</a>
                 </div>
             </form>
         </div>
