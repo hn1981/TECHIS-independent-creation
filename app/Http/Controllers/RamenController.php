@@ -194,7 +194,7 @@ class RamenController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             Log::error($e->getMessage());
-            return back()->withErrors('エラーが発生しました。')->withInput();
+            return back()->withErrors(['エラーが発生しました。','error' => $e->getMessage()])->withInput();
         }
 
         return redirect('/ramens');
