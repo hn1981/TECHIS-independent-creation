@@ -51,11 +51,11 @@
                         @foreach ($shops as $shop)
                             <tr>
                                 @if (session('adminSession'))
-                                <td>{{ $shop->user->name }}</td>
+                                <td>{{ optional($shop->user)->name ?? '削除されたユーザー' }}</td>
                                 <td>{{ $shop->id }}</td>
                                 @endif
                                 <td>{{ $shop->name }}</td>
-                                <td>{{ $shop->prefecture->prefecture_name }}</td>
+                                <td>{{ optional($shop->prefecture)->prefecture_name ?? ''}}</td>
                                 <td><a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($shop->address) }}" target="_blank">{{ mb_strlen($shop->address) > 15 ?  mb_substr($shop->address, 0, 15) . '...' : $shop->address }}</a></td>
                                 <td><a href="{{ $shop->url }}" target="_blank">{{ mb_strlen($shop->url) > 30 ? mb_substr($shop->url, 0, 30) . '...' : $shop->url }}</a></td>
                                 <td>{{ $shop->updated_at->format('Y/m/d') }}</td>

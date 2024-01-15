@@ -21,7 +21,11 @@
 
                         <div class="form-group">
                             <label>店舗名</label>
+                            @if ($ramen->shop)
                             <p><td><a href="{{ route('shops.show', ['shop' => $ramen->shop->id]) }}">{{ optional($ramen->shop)->name ?? '未設定' }}</a></td></p>
+                            @else
+                            <p>削除済み店舗</p>
+                            @endif
                         </div>
 
                         <div class="form-group">

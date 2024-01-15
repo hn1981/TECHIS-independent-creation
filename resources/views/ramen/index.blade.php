@@ -51,12 +51,16 @@
                         @foreach ($ramens as $ramen)
                             <tr>
                                 @if (session('adminSession'))
-                                <td>{{ $ramen->user->name }}</td>
+                                <td>{{ optional($ramen->user)->name ?? '削除済みユーザー' }}</td>
                                 <td>{{ $ramen->id }}</td>
                                 @endif
                                 <td>{{ $ramen->name }}</td>
-                                <td>{{ optional(optional($ramen->shop)->prefecture)->prefecture_name ?? '未設定' }}</td>
-                                <td><a href="{{ route('shops.show', ['shop' => $ramen->shop->id]) }}">{{ optional($ramen->shop)->name ?? '未設定' }}</a></td>
+                                <td>{{ optional(optional($ramen->shop)->prefecture)->prefecture_name ?? '' }}</td>
+                                @if ($ramen->shop)
+                                <td><a href="{{ route('shops.show', ['shop' => $ramen->shop->id]) }}">{{ optional($ramen->shop)->name ?? '削除された店舗' }}</a></td>
+                                @else
+                                <td>削除済み店舗</td>
+                                @endif
                                 <td>{{ $ramen->eating_date }}</td>
                                 <td>{{ $ramen->updated_at->format('Y/m/d') }}</td>
                                 <td id="detail-form-{{ $ramen->id }}" >
