@@ -1,43 +1,44 @@
-## 商品管理システム
+# ラーメン備忘録
 
-### 環境構築手順
+## 概要
+本システムは、ユーザーが、自らの食体験を記録・共有するためのWebプラットフォームです。
 
-* Gitクローン
-* .env.example をコピーして .env を作成
-* MySQLのデータベース作成（名前：item_management）
-* Macの場合 .env の DB_PASSWORD を root に修正（Windowsは修正不要）
+ユーザーは、訪問した店舗、食したラーメンの種類、味わい、そして独自の感想を詳細に記録することが出来る。
+これにより、ユーザーは情報のアーカイブ化を行うこと可能となります。
 
-    ```INI
-    DB_PASSWORD=root
-    ```
+また、ホーム画面に訪問した店舗や都道府県をランキング形式で表示することにより、ユーザーが自身の趣向傾向を確認できる機能も実装しております。
 
-* APP_KEY生成
+## 主な機能
+- ログイン・ログアウト機能
+- ラーメン一覧画面
+- 店舗一覧機能
+- ユーザー一覧機能※
+- ラーメン新規登録、編集、削除機能
+- 店舗新規登録、編集、削除機能
+- データ検索機能
 
-    ```console
-    php artisan key:generate
-    ```
+## 開発環境
+```
+PHP 8.2.4
+MySQL 8.0.33
+Laravel 10.13.5
+```
 
-* Composerインストール
+## 設計書
 
-    ```console
-    composer install
-    ```
+[画面設計書](https://docs.google.com/spreadsheets/d/15h2pGMwt70mRh3XHd_B_50d5qccbXaDU/edit#gid=55399873)
 
-* フロント環境構築
+[データベース設計書](https://docs.google.com/spreadsheets/d/1SFJ3j9xQBszUb3iMyQz0DdpU0mLa2u40/edit#gid=468052788)
 
-    ```console
-    npm ci
-    npm run build
-    ```
+## システム閲覧
+[アプリケーションページへ](https://independent-creation-d0d7bcb7c283.herokuapp.com)
 
-* マイグレーション
-
-    ```console
-    php artisan migrate
-    ```
-
-* 起動
-
-    ```console
-    php artisan serve
-    ```
+### テストアカウント情報
+```
+・管理者
+　メールアドレス：test_admin001@example.com
+　パスワード：12345678
+・一般ユーザー
+　メールアドレス：test001@example.com
+　パスワード：12345678
+```
